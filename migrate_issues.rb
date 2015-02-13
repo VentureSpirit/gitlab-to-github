@@ -24,16 +24,15 @@ loop do
   break if extra_issues.count <= 0
   page += 1
   issues += extra_issues
-  puts "Total issues: #{issues.count}"
 end
+puts "Got #{issues.count} issues"
 
 # Get all the comments (notes)
 comments = {}
 issues.each do |issue|
   comments[issue.id] = Gitlab.issue_notes(PROJECT_ID, issue.id)
 end
-
-puts "Got #{comments.values.flatten.count} comments in total"
+puts "Got #{comments.values.flatten.count} comments"
 
 # List all users:
 users = issues.map { |issue| issue.author.username }
@@ -41,4 +40,13 @@ users += comments.values.flatten.map { |comment| comment.author.username }
 users.uniq!
 puts "Got #{users.count} users"
 
-# TODO: Fetch all the uploads
+# Fetch all the uploads
+upload_regex = /\((http[^(]*\/uploads\/[^)]*)\)/
+issues.each do |issue|
+  uploads += issue.description.scan(upload_regex)
+end
+comments.values.flatten.each do |comment|
+  uploads << comment.attachment
+end
+puts "Got #{uploads.count} uploads"
+
