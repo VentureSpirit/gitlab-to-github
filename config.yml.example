@@ -1,0 +1,12 @@
+# Edit and copy to config.yml
+gitlab:
+  endpoint: 'https://gitlab.com/api/v3'
+  private_token: 'tOkEn'
+  project_id: 11
+github:
+  project_user: 'github_user'
+  project_repo: 'github_repo'
+user_mapping:
+  gitlabusername1: 'githubtoken'
+  gitlabusername2: 'githubtoken'
+
