@@ -83,11 +83,11 @@ end
 comments.values.flatten.each do |comment|
   # attachment is just a string :-/
   # We'll have to do this one manually
-  # uploads << comment.attachment if comment.attachment
+  uploads << comment.attachment if comment.attachment
 end
 puts "Got #{uploads.count} uploads"
 
-uploads.each { |u| p u }
+# uploads.each { |u| p u }
 
 p "create the issues"
 # create all the issues on github
@@ -106,6 +106,11 @@ issues.each do |issue|
     payload['assignee'] = CONFIG['gitlab_user_to_github_user_mapping'][issue.assignee.username]
   end
 
+  issue_creator = CONFIG['gitlab_user_to_github_user_mapping'][issue.author.username]
+  if issue_creator.nil?
+    payload['body'] = "[originally posted by #{issue_creator}]\n\n" + issue.description
+  end
+
   githubissue = create_issue(issue.author.username, payload)
   if issue.state === "closed"
     puts "update the issue's state to closed"
@@ -114,6 +119,10 @@ issues.each do |issue|
 
   comments[issue.id].each do |comment|
     puts "adding comments to issue"
+    comment_creator = CONFIG['gitlab_user_to_github_user_mapping'][comment.author.username]
+    if comment_creator.nil?
+      payload['body'] = "[originally posted by #{comment_creator}]\n\n" + issue.description
+    end
     create_comment(comment.author.username, githubissue.body.number, {body: comment.body})
   end
 
