@@ -9,4 +9,10 @@ github:
 user_mapping:
   gitlabusername1: 'githubtoken'
   gitlabusername2: 'githubtoken'
+milestone_mapping:
+  gitlabmilestonename1: githubmilestoneid1
+  gitlabmilestonename2: githubmilestoneid2
+gitlab_user_to_github_user_mapping:
+  gitlabusername1: 'githubusername1'
+  gitlabusername2: 'githubusername2'
 
