@@ -52,7 +52,7 @@ end
 puts "Got #{labels.count} labels"
 
 # Get all the issues
-page = 0
+page = 1
 loop do
   extra_issues = Gitlab.issues(CONFIG["gitlab"]["project_id"], per_page: 100, page: page)
   break if extra_issues.count <= 0
